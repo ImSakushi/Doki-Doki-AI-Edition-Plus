@@ -59,6 +59,26 @@ label start:
                 renpy.say("[current_char_title]", message)
             renpy.log(cur_speaker)
 
+        def play_music_tag(music_tag):
+            if not music_tag or music_tag == "none":
+                if renpy.music.get_playing(channel="music"):
+                    renpy.music.stop(channel="music", fadeout=1.0)
+                return
+            music_map = {
+                "t2": audio.t2,
+                "t3": audio.t3,
+                "t5": audio.t5,
+                "t6": audio.t6,
+                "t7": audio.t7,
+                "t8": audio.t8,
+                "t9": audio.t9,
+                "t10": audio.t10,
+            }
+            track = music_map.get(music_tag)
+            if not track:
+                return
+            renpy.music.play(track, fadeout=0.0, fadein=0.0, if_changed=True)
+
     $ input_popup_gui = True
 
     stop music fadeout 0.5
@@ -201,6 +221,7 @@ label AICharacter:
     $ current_left = Data(path_to_user_dir=pathSetup).getSceneData("left_sprite")
     $ current_right = Data(path_to_user_dir=pathSetup).getSceneData("right_sprite")
     $ current_background = Data(path_to_user_dir=pathSetup).getSceneData("background")
+    $ current_music = Data(path_to_user_dir=pathSetup).getSceneData("music")
     $ zone_type = Data(path_to_user_dir=pathSetup).getSceneData("zone")
 
 
@@ -219,6 +240,8 @@ label AICharacter:
         image custom_bg:
             im.Composite((1280, 720), (0, 0), f"assets/imgs/bg/{current_background}")
         scene custom_bg
+
+    $ play_music_tag(current_music)
 
 
     # If the character is a default DDLC sprite then use images.rpa, otherwise use the custom path
@@ -327,6 +350,7 @@ label AICharacter:
         $ current_left = Data(path_to_user_dir=pathSetup).getSceneData("left_sprite")
         $ current_right = Data(path_to_user_dir=pathSetup).getSceneData("right_sprite")
         $ current_background = Data(path_to_user_dir=pathSetup).getSceneData("background")
+        $ current_music = Data(path_to_user_dir=pathSetup).getSceneData("music")
 
 
         if final_msg.startswith("<|Error|>"):
@@ -344,6 +368,8 @@ label AICharacter:
                 image custom_bg:
                     im.Composite((1280, 720), (0, 0), f"assets/imgs/bg/{current_background}")
                 scene custom_bg
+
+            $ play_music_tag(current_music)
 
 
             # If the character is a default DDLC sprite then use images.rpa, otherwise use the custom path

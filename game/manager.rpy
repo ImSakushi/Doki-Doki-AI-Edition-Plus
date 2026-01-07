@@ -85,6 +85,19 @@ init python:
 
             return self.dbase.updateSceneData("background", bg_scenes['checks']["clubroom"])
 
+        def controlMusic(self, music):
+            """Store a music cue in scenedata."""
+            if not music:
+                return
+
+            music = music.lower()
+            allowed = {"none", "t2", "t3", "t5", "t6", "t7", "t8", "t9", "t10"}
+            if music not in allowed:
+                return
+
+            if self.dbase.getSceneData("music") == music:
+                return
+            return self.dbase.updateSceneData("music", music)
 
 
             
@@ -123,7 +136,9 @@ init python:
 
             char = getContent('[CHAR]', '[CONTENT]') # Currently unused, just a placeholder once the usage of multiple chars is implemented
             face = getContent('[FACE]', '[BODY]')
-            body = getContent('[BODY]', '[CONTENT]')
+            body_end = '[MUSIC]' if "[MUSIC]" in reply else '[CONTENT]'
+            body = getContent('[BODY]', body_end)
+            music = getContent('[MUSIC]', '[CONTENT]') if "[MUSIC]" in reply else None
             scene = getContent('[SCENE]', '[FACE]')
 
             reply = reply.split('[END]')[0] # remove anything after [END]
@@ -145,7 +160,7 @@ init python:
                 # Typically this means that the model didnt return a proper content field
                 reply = "ERROR"
 
-            return reply, char, face, body, scene
+            return reply, char, face, body, scene, music
 
 
 
@@ -171,10 +186,27 @@ init python:
             emotions = ', '.join([e for e in Configs().characters[self.character_name.title()]['head']]) if spacezone != "true" else ""
             backgrounds = ', '.join(bg_scenes)
 
+            def language_prompt_hint():
+                try:
+                    lang = _preferences.language
+                except Exception:
+                    lang = None
+
+                if lang == "french":
+                    return "Respond in french."
+                if lang == "spanish":
+                    return "Respond in spanish."
+                return ""
+
+            format_text = Info().format["roleplay"] if spacezone != "true" else Info().format["purgatory"]
+            lang_hint = language_prompt_hint()
+            if lang_hint:
+                format_text = "\n" + lang_hint + "\n" + format_text
+
             if spacezone != "true":
-                string = raw_examples[0]['content'].replace("{{format}}", Info().format["roleplay"])
+                string = raw_examples[0]['content'].replace("{{format}}", format_text)
             else:
-                string = raw_examples[0]['content'].replace("{{format}}", Info().format["purgatory"])
+                string = raw_examples[0]['content'].replace("{{format}}", format_text)
 
             string = string.replace("{{char}}", self.character_name)
             string = string.replace("{{emotes}}", emotions)
@@ -269,10 +301,14 @@ init python:
 
 
             if "[SCENE]" not in response or "[FACE]" not in response or "[BODY]" not in response or "[CONTENT]" not in response:
-                response = "[SCENE] clubroom [FACE] happy [BODY] relaxed [CONTENT] ... [END]"
+                response = "[SCENE] clubroom [FACE] happy [BODY] relaxed [MUSIC] none [CONTENT] ... [END]"
+
+            if "[MUSIC]" not in response:
+                response = response.replace("[CONTENT]", "[MUSIC] none [CONTENT]")
 
             if "[BODY]" in response:
-                body = response.split("[BODY]")[1].split("[CONTENT]")[0].strip()
+                body_end = "[MUSIC]" if "[MUSIC]" in response else "[CONTENT]"
+                body = response.split("[BODY]")[1].split(body_end)[0].strip()
 
                 if body not in Configs().body_types(self.character_name):
                     response = response.replace(body, "relaxed")
@@ -284,6 +320,12 @@ init python:
                 if face not in emotions:
                     random_face = random.choice([e for e in Configs().characters[self.character_name.title()]['head']])
                     response = response.replace(face, random_face)
+
+            if "[MUSIC]" in response:
+                music = response.split("[MUSIC]")[1].split("[CONTENT]")[0].strip().lower()
+                allowed = {"none", "t2", "t3", "t5", "t6", "t7", "t8", "t9", "t10"}
+                if music not in allowed:
+                    response = response.replace(response.split("[MUSIC]")[1].split("[CONTENT]")[0], " none ")
             return response
 
 
@@ -325,7 +367,7 @@ init python:
             response = self.checkForBadFormat(response)
 
         
-            reply, _, face, body, scene = self.removeKeywords(response)
+            reply, _, face, body, scene, music = self.removeKeywords(response)
 
 
             # Log AI input
@@ -340,6 +382,7 @@ init python:
 
             self.controlMood(face, body)
             self.controlBackground(scene)
+            self.controlMusic(music)
 
             with open(f"{self.full_path}/chathistory.json", 'w') as f:
                 json.dump(self.chathistory, f, indent=2)
