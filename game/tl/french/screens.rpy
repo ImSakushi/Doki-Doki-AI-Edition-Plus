@@ -26,6 +26,9 @@ translate french strings:
     old "Back"
     new "Retour"
 
+    old "Begin"
+    new "Commencer"
+
     old "Change"
     new "Modifier"
 
@@ -65,6 +68,9 @@ translate french strings:
     old "Display"
     new "Affichage"
 
+    old "Edit"
+    new "Modifier"
+
     old "English"
     new "Anglais"
 
@@ -85,6 +91,9 @@ translate french strings:
 
     old "Enter a ChatGPT model name\nExample: gpt-4o-mini"
     new "Entrez un nom de modèle ChatGPT\nExemple : gpt-4o-mini"
+
+    old "Enter a message:"
+    new "Entrez un message :"
 
     old "Enter a model from your ollama list\nYou can check what models you have available by typing \"ollama list\" in a command line on your device."
     new "Entrez un modèle depuis votre liste ollama\nVous pouvez vérifier les modèles disponibles en tapant \"ollama list\" dans un terminal sur votre appareil."
@@ -146,6 +155,9 @@ translate french strings:
     old "Main Menu"
     new "Menu principal"
 
+    old "Are you sure you want to return to the main menu?"
+    new "Êtes-vous sûr de vouloir retourner au menu principal ?"
+
     old "Model Config"
     new "Config modèle"
 
@@ -157,6 +169,9 @@ translate french strings:
 
     old "Mute All"
     new "Tout couper"
+
+    old "Name This Realm:"
+    new "Nommez ce royaume :"
 
     old "New Game"
     new "Nouvelle partie"
@@ -196,6 +211,21 @@ translate french strings:
 
     old "Return"
     new "Retour"
+
+    old "President of the Literature Club, Monika is best known for her stellar looks, superb athleticism, and being at the top of her class. Much like a book, though, there's a lot more to her than what's on the surface..."
+    new "Présidente du club de littérature, Monika est surtout connue pour son apparence, ses capacités athlétiques et le fait d'être au sommet de sa classe. Comme un livre, pourtant, il y a bien plus en elle que ce qu'on voit en surface..."
+
+    old "A best friend to the very end! Sayori's trademark smiles and clumsy attitude never fail to lift the spirits of nearly anyone she meets. Don't be too fooled by it, though, for those who smile the widest tend to cry the hardest...\n\nHeight: 5'2'' / 157.48cm\nWeight: 119lbs / 54kg\nEye Color: Blue\nEthnicity: Japan"
+    new "Une meilleure amie jusqu'au bout ! Les sourires emblématiques de Sayori et sa maladresse ne manquent jamais de remonter le moral de presque tous ceux qu'elle rencontre. Mais ne te laisse pas trop tromper, car ceux qui sourient le plus ont tendance à pleurer le plus fort...\n\nTaille : 5'2'' / 157,48 cm\nPoids : 119 lbs / 54 kg\nCouleur des yeux : Bleus\nOrigine : Japon"
+
+    old "An aficionado at all things baking and unhesitant to put you in your place, Natsuki brings equal amounts of sweet and sour to the table...not specifically for you, or anything. No calling her cute!\n\nHeight: 4'11'' / 149.86cm\nWeight: 92.5lbs / 42kg\nEye Color: Magenta\nEthnicity: Japan"
+    new "Passionnée de pâtisserie et jamais en manque pour te remettre à ta place, Natsuki apporte autant de douceur que d'acidité... pas spécialement pour toi, hein. Ne la traite pas de mignonne !\n\nTaille : 4'11'' / 149,86 cm\nPoids : 92,5 lbs / 42 kg\nCouleur des yeux : Magenta\nOrigine : Japon"
+
+    old "When she's not buried in the world of books, Yuri shyly brings an air of serenity to wherever she goes, sometimes accompanied by a hot cup of tea. Trust in her eyes goes a long way, so be sure to never break hers.\n\nHeight: 5'5'' / 165.1cm\nWeight: 130lbs / 59kg\nEye Color: Purple\nEthnicity: Japan"
+    new "Quand elle n'est pas plongée dans le monde des livres, Yuri apporte timidement une atmosphère sereine partout où elle va, parfois accompagnée d'une tasse de thé fumante. La confiance dans ses yeux va loin, alors veille à ne jamais la briser.\n\nTaille : 5'5'' / 165,1 cm\nPoids : 130 lbs / 59 kg\nCouleur des yeux : Violets\nOrigine : Japon"
+
+    old "Returning to main menu..."
+    new "Retour au menu principal..."
 
     old "Right"
     new "Droite"

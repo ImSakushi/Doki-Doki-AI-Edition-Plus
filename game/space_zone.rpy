@@ -119,7 +119,7 @@ label space_zone:
     if convo.startswith("<|Error|>"):
         $ convo = convo.replace("<|Error|>", "")
         show screen error_popup(message=convo)
-        "Returning to main menu..."
+        $ renpy.say(None, _("Returning to main menu..."))
         return
 
 
@@ -152,7 +152,7 @@ label space_zone:
 
         else:
             while user_msg.strip() == "":
-                $ user_msg = renpy.input("Enter a message: ")
+                $ user_msg = renpy.input(_("Enter a message:"))
 
             $ counter += 1
 

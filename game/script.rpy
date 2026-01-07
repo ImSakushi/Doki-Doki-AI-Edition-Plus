@@ -179,7 +179,7 @@ label AICharacter:
             $ renpy.log(">>> in saved game")
 
     else:
-        $ chatFolderName = renpy.input("Name This Realm: ", "realm", allow=" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_").strip()
+        $ chatFolderName = renpy.input(_("Name This Realm:"), "realm", allow=" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_").strip()
         $ chatSetup = SetupChat(chat_name=chatFolderName, character_name=character_name)
         $ pathSetup = chatSetup.setup(purgatory=False)
 
@@ -207,7 +207,7 @@ label AICharacter:
     if convo.startswith("<|Error|>"):
         $ convo = convo.replace("<|Error|>", "")
         show screen error_popup(message=convo)
-        "Returning to main menu..."
+        $ renpy.say(None, _("Returning to main menu..."))
         return
 
 
@@ -311,7 +311,7 @@ label AICharacter:
             $ user_msg = "continue"
         else:
             while user_msg.strip() == "":
-                $ user_msg = renpy.input("Enter a message: ")
+                $ user_msg = renpy.input(_("Enter a message:"))
 
             if user_msg  == "init_end_sim" and character_name == "monika":
                 $ main_event_loop = False

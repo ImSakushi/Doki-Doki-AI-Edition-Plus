@@ -122,7 +122,7 @@ label download_model_label:
         if download_text.startswith("<|Error|>"):
             $ download_text = download_text.replace("<|Error|>", "")
             show screen error_popup(message=download_text)
-            "Returning to main menu..."
+            $ renpy.say(None, _("Returning to main menu..."))
             return
         else:
             "[download_progress] {fast} {w=0.7}{nw}"

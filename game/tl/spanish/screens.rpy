@@ -26,6 +26,9 @@ translate spanish strings:
     old "Back"
     new "Atrás"
 
+    old "Begin"
+    new "Comenzar"
+
     old "Change"
     new "Cambiar"
 
@@ -65,6 +68,9 @@ translate spanish strings:
     old "Display"
     new "Pantalla"
 
+    old "Edit"
+    new "Editar"
+
     old "English"
     new "Inglés"
 
@@ -85,6 +91,9 @@ translate spanish strings:
 
     old "Enter a ChatGPT model name\nExample: gpt-4o-mini"
     new "Introduce un nombre de modelo de ChatGPT\nEjemplo: gpt-4o-mini"
+
+    old "Enter a message:"
+    new "Introduce un mensaje:"
 
     old "Enter a model from your ollama list\nYou can check what models you have available by typing \"ollama list\" in a command line on your device."
     new "Introduce un modelo de tu lista de ollama\nPuedes ver los modelos disponibles escribiendo \"ollama list\" en una terminal de tu dispositivo."
@@ -146,6 +155,9 @@ translate spanish strings:
     old "Main Menu"
     new "Menú principal"
 
+    old "Are you sure you want to return to the main menu?"
+    new "¿Seguro que quieres volver al menú principal?"
+
     old "Model Config"
     new "Config del modelo"
 
@@ -157,6 +169,9 @@ translate spanish strings:
 
     old "Mute All"
     new "Silenciar todo"
+
+    old "Name This Realm:"
+    new "Nombra este reino:"
 
     old "New Game"
     new "Nuevo juego"
@@ -196,6 +211,21 @@ translate spanish strings:
 
     old "Return"
     new "Volver"
+
+    old "Returning to main menu..."
+    new "Volviendo al menú principal..."
+
+    old "President of the Literature Club, Monika is best known for her stellar looks, superb athleticism, and being at the top of her class. Much like a book, though, there's a lot more to her than what's on the surface..."
+    new "Presidenta del club de literatura, Monika es conocida por su aspecto, su gran atletismo y por estar en lo más alto de su clase. Como un libro, sin embargo, hay mucho más en ella de lo que se ve en la superficie..."
+
+    old "A best friend to the very end! Sayori's trademark smiles and clumsy attitude never fail to lift the spirits of nearly anyone she meets. Don't be too fooled by it, though, for those who smile the widest tend to cry the hardest...\n\nHeight: 5'2'' / 157.48cm\nWeight: 119lbs / 54kg\nEye Color: Blue\nEthnicity: Japan"
+    new "¡Una mejor amiga hasta el final! Las sonrisas características de Sayori y su torpeza nunca dejan de animar a casi cualquiera que conoce. Pero no te dejes engañar demasiado, porque quienes más sonríen tienden a llorar con más fuerza...\n\nAltura: 5'2'' / 157.48 cm\nPeso: 119 lbs / 54 kg\nColor de ojos: Azul\nEtnia: Japón"
+
+    old "An aficionado at all things baking and unhesitant to put you in your place, Natsuki brings equal amounts of sweet and sour to the table...not specifically for you, or anything. No calling her cute!\n\nHeight: 4'11'' / 149.86cm\nWeight: 92.5lbs / 42kg\nEye Color: Magenta\nEthnicity: Japan"
+    new "Apasionada de todo lo relacionado con la repostería y sin dudar en ponerte en tu lugar, Natsuki aporta partes iguales de dulce y ácido... no es específicamente para ti ni nada. ¡Ni se te ocurra llamarla linda!\n\nAltura: 4'11'' / 149.86 cm\nPeso: 92.5 lbs / 42 kg\nColor de ojos: Magenta\nEtnia: Japón"
+
+    old "When she's not buried in the world of books, Yuri shyly brings an air of serenity to wherever she goes, sometimes accompanied by a hot cup of tea. Trust in her eyes goes a long way, so be sure to never break hers.\n\nHeight: 5'5'' / 165.1cm\nWeight: 130lbs / 59kg\nEye Color: Purple\nEthnicity: Japan"
+    new "Cuando no está enterrada en el mundo de los libros, Yuri aporta tímidamente un aire de serenidad allá donde va, a veces acompañada de una taza de té caliente. La confianza en sus ojos llega muy lejos, así que procura no romperla nunca.\n\nAltura: 5'5'' / 165.1 cm\nPeso: 130 lbs / 59 kg\nColor de ojos: Morado\nEtnia: Japón"
 
     old "Right"
     new "Derecha"
