@@ -577,6 +577,10 @@ init python:
         renpy.save_persistent()
 
 
+    def SetChatProvider(provider):
+        persistent.chatProvider = provider
+        renpy.save_persistent()
+
     def FinishDownload():
         renpy.jump_out_of_context("download_model_label")
 
@@ -586,8 +590,17 @@ init python:
 
 
     def DeleteModel(model):
-        import ollama
-        import httpx
+        try:
+            import ollama
+            import httpx
+        except Exception:
+            renpy.show_screen(
+                "basic_popup",
+                title="Delete Model",
+                message="Ollama python module not installed.",
+                ok_action=renpy.hide_screen("basic_popup"),
+            )
+            return
 
         message = f"Sucessfully deleted {model}!"
 
@@ -982,21 +995,30 @@ init python:
 #default num = None
 init python:
     import os
-    import ollama
-    import httpx
+    try:
+        import ollama
+        import httpx
+        OLLAMA_AVAILABLE = True
+    except Exception:
+        ollama = None
+        httpx = None
+        OLLAMA_AVAILABLE = False
 
     chats = ""
     try: chats = os.listdir(f"{config.basedir}/chats")
     except FileNotFoundError: pass
 
     ai_list = []
-    try:
-        lst = ollama.list()
+    if not OLLAMA_AVAILABLE:
+        ai_list = "missing"
+    else:
+        try:
+            lst = ollama.list()
 
-        for i in lst["models"]:
-            ai_list.append(i["name"])
-    except httpx.ConnectError:
-        ai_list = "off"
+            for i in lst["models"]:
+                ai_list.append(i["name"])
+        except httpx.ConnectError:
+            ai_list = "off"
 
 
 
@@ -1121,11 +1143,14 @@ screen select_model_name_screen():
     zorder 10
     add "assets/imgs/bg/theme.png"
 
+    default show_openai_models = True
     $ fav_local_models = chat_model_dict["llms"]["suggested"]
     $ other_local_models = chat_model_dict["llms"]["other"]
+    $ openai_models = chat_model_dict["openai"]["suggested"]
 
 
-    $ important_info = "If you know you have ollama running and you know you have extra models installed but it's not being displayed, you need to restart your game." if llm_mode == True else "If you know you have ollama running but it's not being displayed, you need to restart your game."
+    $ important_info = "If you know you have ollama running and you know you have extra models installed but it's not being displayed, you need to restart your game." if persistent.chatProvider == "ollama" else "ChatGPT requires an internet connection and a valid OpenAI API key."
+    $ custom_model_message = "Enter a ChatGPT model name\nExample: gpt-4o-mini" if persistent.chatProvider == "openai" else "Enter a model from your ollama list\nYou can check what models you have available by typing \"ollama list\" in a command line on your device."
     use game_menu(_("Models"), scroll="viewport"):
 
         vbox:
@@ -1139,14 +1164,17 @@ screen select_model_name_screen():
 
             vbox:
                 label _(f"Current Model: {persistent.chatModel}")
+                label _(f"Provider: {persistent.chatProvider}")
                 textbutton _("Important Info") action Show(screen="basic_popup", title="Info", message=important_info, ok_action=NullAction())
 
 
 
             vbox:
-                if llm_mode == True:
+                if persistent.chatProvider == "ollama":
                     label _(f"Your Models")
-                    if ai_list == []:
+                    if ai_list == "missing":
+                        textbutton _("Ollama python module not installed.") action NullAction()
+                    elif ai_list == []:
                         textbutton _("None") action NullAction()
                     else:
                         if ai_list == "off":
@@ -1160,6 +1188,17 @@ screen select_model_name_screen():
 
                     label _(f"Setup")
                     textbutton _("Download Models") action Function(FinishSetup)
+                else:
+                    textbutton _(f"ChatGPT Models") action SetScreenVariable("show_openai_models", not show_openai_models)
+                    if show_openai_models:
+                        for model in openai_models:
+                            textbutton _(f"{model}") action Show(screen="basic_popup", title="ChatGPT Models", message="Sucessfully updated model!", ok_action=Function(FinishUpdateModelName, model))
+                    textbutton _("Custom Model") action [SetVariable("chatModel", persistent.chatModel), Show(screen="model_name_input", message=custom_model_message, ok_action=Function(FinishEnterModelName))]
+
+                    label _(f"API Key")
+                    if not persistent.chatToken:
+                        textbutton _("No API key set") action NullAction()
+                    textbutton _("Set API Key") action [SetVariable("chatToken", persistent.chatToken), Show(screen="APIKey_name_input", message="Enter API Key", ok_action=Function(FinishEnterAPIKey))]
 
 
 
@@ -1307,6 +1346,12 @@ screen preferences():
                     style_prefix "radio"
                     label _("AI Type")
                     textbutton _("LLM") action [SetVariable("llm_mode", True)]
+
+                vbox:
+                    style_prefix "radio"
+                    label _("AI Provider")
+                    textbutton _("Ollama (Local)") action Function(SetChatProvider, "ollama") selected (persistent.chatProvider == "ollama")
+                    textbutton _("ChatGPT API") action Function(SetChatProvider, "openai") selected (persistent.chatProvider == "openai")
 
 
 

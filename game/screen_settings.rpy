@@ -6,8 +6,12 @@ label apikey_label:
 
 
 label custom_chat_model_label:
-    "Enter a model from your ollama list"
-    "You can check what models you have available by typing \"ollama list\" in a command line on your device."
+    if persistent.chatProvider == "openai":
+        "Enter a ChatGPT model name"
+        "Example: gpt-4o-mini"
+    else:
+        "Enter a model from your ollama list"
+        "You can check what models you have available by typing \"ollama list\" in a command line on your device."
     $ model = renpy.input("Enter a model", f"{persistent.chatModel}").strip()
     $ persistent.chatModel = model 
     $ renpy.save_persistent()
@@ -53,8 +57,14 @@ label tutorial_label:
 
 init python:
     from tqdm import tqdm
-    import ollama
-    import httpx
+    try:
+        import ollama
+        import httpx
+        OLLAMA_AVAILABLE = True
+    except Exception:
+        ollama = None
+        httpx = None
+        OLLAMA_AVAILABLE = False
 
     def download_model(model_name):
         global is_downloading
@@ -64,6 +74,10 @@ init python:
         is_downloading = True
         download_progress = ""
         download_text = ""
+        if not OLLAMA_AVAILABLE:
+            is_downloading = False
+            download_text = "<|Error|> Ollama python module not installed."
+            return
         try:
             current_digest, bars = '', {}
             for progress in ollama.pull(model_name, stream=True):

@@ -1427,11 +1427,13 @@ define mc_default = DynamicCharacter('player', what_prefix='"', what_suffix='"',
 define default_context_window = "1024"
 define default_temp = "6"
 define default_seed = "random"
+define default_chat_provider = "openai"
 define chatModel = "None"
 
 default persistent.context_window = default_context_window
 default persistent.temp = default_temp
 default persistent.seed = default_seed
+default persistent.chatProvider = default_chat_provider
 
 
 default context_window = persistent.context_window
@@ -1450,6 +1452,7 @@ define persistent.imgToken = None
 default llm_mode = True
 default persistent.chatModel = chatModel
 default persistent.chatToken = ""
+default chatToken = persistent.chatToken
 
 
 
@@ -1464,6 +1467,10 @@ define chat_model_dict = {
     "llms": {
         "suggested": ["llama3.1", "llama3", "qwen2"],
         "other": ["mistral"]
+    },
+    "openai": {
+        "suggested": ["gpt-4o-mini", "gpt-4.1-mini", "gpt-4o", "gpt-4.1", "gpt-5-mini", "gpt-5-nano", "gpt-5"],
+        "other": []
     }
 }
 
