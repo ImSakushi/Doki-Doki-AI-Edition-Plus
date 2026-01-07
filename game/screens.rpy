@@ -596,21 +596,21 @@ init python:
         except Exception:
             renpy.show_screen(
                 "basic_popup",
-                title="Delete Model",
-                message="Ollama python module not installed.",
+                title=_("Delete Model"),
+                message=_("Ollama python module not installed."),
                 ok_action=renpy.hide_screen("basic_popup"),
             )
             return
 
-        message = f"Sucessfully deleted {model}!"
+        message = _("Sucessfully deleted {model}!").format(model=model)
 
         try: ollama.delete(model)
         except httpx.ConnectError:
-            message = "You don't have ollama running."
+            message = _("You don't have ollama running.")
         except ollama.ResponseError as e:
             message = f"{e.error}"
 
-        renpy.show_screen("basic_popup", title="Delete Model",
+        renpy.show_screen("basic_popup", title=_("Delete Model"),
         message=message, ok_action=renpy.hide_screen("basic_popup"))
 
 
@@ -638,9 +638,9 @@ screen navigation():
             if main_menu:
 
                 if persistent.playthrough == 1 or persistent.purgatory:
-                    textbutton _("ŔŗñĮ¼»ŧþŀÂŻŕěōì«") action If(persistent.playername, true=Start(), false=Show(screen="name_input", message="Please enter your name", ok_action=Function(FinishEnterName)))
+                    textbutton _("ŔŗñĮ¼»ŧþŀÂŻŕěōì«") action If(persistent.playername, true=Start(), false=Show(screen="name_input", message=_("Please enter your name"), ok_action=Function(FinishEnterName)))
                 else:
-                    textbutton _("New Game") action If(persistent.playername, true=Start(), false=Show(screen="name_input", message="Please enter your name", ok_action=Function(FinishEnterName)))
+                    textbutton _("New Game") action If(persistent.playername, true=Start(), false=Show(screen="name_input", message=_("Please enter your name"), ok_action=Function(FinishEnterName)))
 
             else:
 
@@ -651,7 +651,7 @@ screen navigation():
             if persistent.in_game == False:
                 textbutton _("Load Game") action [ShowMenu("load"), SensitiveIf(renpy.get_screen("load") == None)]
             else:
-                textbutton _("Load Game") action Show(screen="basic_popup", title="Info", message="Go to the Main Menu before loading a game.", ok_action=NullAction())
+                textbutton _("Load Game") action Show(screen="basic_popup", title=_("Info"), message=_("Go to the Main Menu before loading a game."), ok_action=NullAction())
 
             if _in_replay:
 
@@ -670,7 +670,7 @@ screen navigation():
             if renpy.variant("pc"):
 
 
-                textbutton _("Help") action [Help("README.html"), Show(screen="dialog", message="The help file has been opened in your browser.", ok_action=Hide("dialog"))]
+                textbutton _("Help") action [Help("README.html"), Show(screen="dialog", message=_("The help file has been opened in your browser."), ok_action=Hide("dialog"))]
 
 
                 textbutton _("Quit") action Quit(confirm=not main_menu)
@@ -1101,7 +1101,7 @@ screen custom_save_screen():
 
             hbox:
                 null height 50
-                textbutton "Back":
+                textbutton _("Back"):
                     style_prefix "navigation_button_text"
 
                     xpos 20
@@ -1111,7 +1111,7 @@ screen custom_save_screen():
                     action Hide("custom_save_screen")
 
                 null height 50
-                textbutton "Refresh":
+                textbutton _("Refresh"):
                     style_prefix "navigation_button_text"
 
                     xpos 120
@@ -1149,8 +1149,8 @@ screen select_model_name_screen():
     $ openai_models = chat_model_dict["openai"]["suggested"]
 
 
-    $ important_info = "If you know you have ollama running and you know you have extra models installed but it's not being displayed, you need to restart your game." if persistent.chatProvider == "ollama" else "ChatGPT requires an internet connection and a valid OpenAI API key."
-    $ custom_model_message = "Enter a ChatGPT model name\nExample: gpt-4o-mini" if persistent.chatProvider == "openai" else "Enter a model from your ollama list\nYou can check what models you have available by typing \"ollama list\" in a command line on your device."
+    $ important_info = _("If you know you have ollama running and you know you have extra models installed but it's not being displayed, you need to restart your game.") if persistent.chatProvider == "ollama" else _("ChatGPT requires an internet connection and a valid OpenAI API key.")
+    $ custom_model_message = _("Enter a ChatGPT model name\nExample: gpt-4o-mini") if persistent.chatProvider == "openai" else _("Enter a model from your ollama list\nYou can check what models you have available by typing \"ollama list\" in a command line on your device.")
     use game_menu(_("Models"), scroll="viewport"):
 
         vbox:
@@ -1163,15 +1163,15 @@ screen select_model_name_screen():
             box_wrap True
 
             vbox:
-                label _(f"Current Model: {persistent.chatModel}")
-                label _(f"Provider: {persistent.chatProvider}")
-                textbutton _("Important Info") action Show(screen="basic_popup", title="Info", message=important_info, ok_action=NullAction())
+                label _("Current Model: {model}").format(model=persistent.chatModel)
+                label _("Provider: {provider}").format(provider=persistent.chatProvider)
+                textbutton _("Important Info") action Show(screen="basic_popup", title=_("Info"), message=important_info, ok_action=NullAction())
 
 
 
             vbox:
                 if persistent.chatProvider == "ollama":
-                    label _(f"Your Models")
+                    label _("Your Models")
                     if ai_list == "missing":
                         textbutton _("Ollama python module not installed.") action NullAction()
                     elif ai_list == []:
@@ -1182,23 +1182,23 @@ screen select_model_name_screen():
                         else:
                             for model in ai_list:
                                 hbox:
-                                    textbutton _(f"{model}") action Show(screen="basic_popup", title="Local Models", message="Sucessfully updated model!", ok_action=Function(FinishUpdateModelName, model))
+                                    textbutton _(f"{model}") action Show(screen="basic_popup", title=_("Local Models"), message=_("Sucessfully updated model!"), ok_action=Function(FinishUpdateModelName, model))
                                     textbutton _(" | ") action NullAction()
                                     textbutton _("delete") action Function(DeleteModel, model)
 
-                    label _(f"Setup")
+                    label _("Setup")
                     textbutton _("Download Models") action Function(FinishSetup)
                 else:
-                    textbutton _(f"ChatGPT Models") action SetScreenVariable("show_openai_models", not show_openai_models)
+                    textbutton _("ChatGPT Models") action SetScreenVariable("show_openai_models", not show_openai_models)
                     if show_openai_models:
                         for model in openai_models:
-                            textbutton _(f"{model}") action Show(screen="basic_popup", title="ChatGPT Models", message="Sucessfully updated model!", ok_action=Function(FinishUpdateModelName, model))
+                            textbutton _(f"{model}") action Show(screen="basic_popup", title=_("ChatGPT Models"), message=_("Sucessfully updated model!"), ok_action=Function(FinishUpdateModelName, model))
                     textbutton _("Custom Model") action [SetVariable("chatModel", persistent.chatModel), Show(screen="model_name_input", message=custom_model_message, ok_action=Function(FinishEnterModelName))]
 
-                    label _(f"API Key")
+                    label _("API Key")
                     if not persistent.chatToken:
                         textbutton _("No API key set") action NullAction()
-                    textbutton _("Set API Key") action [SetVariable("chatToken", persistent.chatToken), Show(screen="APIKey_name_input", message="Enter API Key", ok_action=Function(FinishEnterAPIKey))]
+                    textbutton _("Set API Key") action [SetVariable("chatToken", persistent.chatToken), Show(screen="APIKey_name_input", message=_("Enter API Key"), ok_action=Function(FinishEnterAPIKey))]
 
 
 
@@ -1226,7 +1226,7 @@ screen llm_model_config_screen():
 
             vbox:
                 null height 50
-                textbutton _("Use Default Settings") action Show(screen="reset_config_window_popup", message="Relaunch the game.", ok_action=Function(FinishResetModelConfig))
+                textbutton _("Use Default Settings") action Show(screen="reset_config_window_popup", message=_("Relaunch the game."), ok_action=Function(FinishResetModelConfig))
                 
 
 
@@ -1238,25 +1238,25 @@ screen llm_model_config_screen():
 
                 vbox:
 
-                    label _(f"Context Window: {context_window}")
+                    label _("Context Window: {value}").format(value=context_window)
 
                     hbox:
-                        textbutton _("Change") action Show(screen="context_window_popup", message="Enter a number", ok_action=Function(FinishEnterContextWindow))
-                        textbutton _("Info") action [Show(screen="info_context_window_popup", message="Context Window", ok_action=Hide("info_context_window_popup")), Return(), renpy.hide_screen("preferences"), renpy.hide_screen("llm_model_config_screen")]
+                        textbutton _("Change") action Show(screen="context_window_popup", message=_("Enter a number"), ok_action=Function(FinishEnterContextWindow))
+                        textbutton _("Info") action [Show(screen="info_context_window_popup", message=_("Context Window"), ok_action=Hide("info_context_window_popup")), Return(), renpy.hide_screen("preferences"), renpy.hide_screen("llm_model_config_screen")]
 
-                    label _(f"Temperature: 0.{temp}")
+                    label _("Temperature: 0.{value}").format(value=temp)
 
                     hbox:
-                        textbutton _("Change") action Show(screen="temp_window_popup", message="Enter a number 0-9", ok_action=Function(FinishEnterTemp))
-                        textbutton _("Info") action [Show(screen="info_temp_popup", message="Temperature", ok_action=Hide("info_temp_popup")), Return(), renpy.hide_screen("preferences"), renpy.hide_screen("llm_model_config_screen")]
+                        textbutton _("Change") action Show(screen="temp_window_popup", message=_("Enter a number 0-9"), ok_action=Function(FinishEnterTemp))
+                        textbutton _("Info") action [Show(screen="info_temp_popup", message=_("Temperature"), ok_action=Hide("info_temp_popup")), Return(), renpy.hide_screen("preferences"), renpy.hide_screen("llm_model_config_screen")]
 
                 vbox:
 
-                    label _(f"Seed: {seed}")
+                    label _("Seed: {value}").format(value=seed)
 
                     hbox:
-                        textbutton _("Change") action Show(screen="seed_window_popup", message="Enter a number", ok_action=Function(FinishEnterSeed))
-                        textbutton _("Info") action [Show(screen="info_seed_popup", message="Seed", ok_action=Hide("info_seed_popup")), Return(), renpy.hide_screen("preferences"), renpy.hide_screen("llm_model_config_screen")]
+                        textbutton _("Change") action Show(screen="seed_window_popup", message=_("Enter a number"), ok_action=Function(FinishEnterSeed))
+                        textbutton _("Info") action [Show(screen="info_seed_popup", message=_("Seed"), ok_action=Hide("info_seed_popup")), Return(), renpy.hide_screen("preferences"), renpy.hide_screen("llm_model_config_screen")]
 
 
 
@@ -1353,6 +1353,13 @@ screen preferences():
                     textbutton _("Ollama (Local)") action Function(SetChatProvider, "ollama") selected (persistent.chatProvider == "ollama")
                     textbutton _("ChatGPT API") action Function(SetChatProvider, "openai") selected (persistent.chatProvider == "openai")
 
+                vbox:
+                    style_prefix "radio"
+                    label _("Language")
+                    textbutton _("English") action Language(None)
+                    textbutton _("Français") action Language("french")
+                    textbutton _("Español") action Language("spanish")
+
 
 
 
@@ -1414,7 +1421,7 @@ screen preferences():
                 vbox:
                     textbutton _("Model Config") action ShowMenu("llm_model_config_screen")
                 vbox:
-                    textbutton _("Change Username") action Show(screen="name_input", message="Please enter your name", ok_action=Function(FinishEnterName))
+                    textbutton _("Change Username") action Show(screen="name_input", message=_("Please enter your name"), ok_action=Function(FinishEnterName))
 
 
 
